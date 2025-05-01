@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { Upload, Plus, X, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Upload, Plus, X, ScanSearch } from "lucide-react";
 import Image from "next/image";
 
 export default function Dashboard() {
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const { push } = useRouter();
 
     const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -52,7 +54,7 @@ export default function Dashboard() {
 
         // Setelah upload, bisa redirect atau reset
         alert("Gambar berhasil disubmit!");
-        handleCancel();
+        push("/result-image");
     };
 
     return (
@@ -111,7 +113,7 @@ export default function Dashboard() {
 
                 <div className="flex justify-end mt-8 space-x-4">
                     {!preview ? (
-                        <label className="basis-1/4 flex items-center justify-center bg-[#4D96FF] text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg cursor-pointer">
+                        <label className="basis-1/4 flex items-center justify-center bg-[#4D96FF] hover:bg-blue-800 text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg cursor-pointer">
                             <Plus strokeWidth={3} />
                             <span className="ml-2">Add Image</span>
                             <input
@@ -125,17 +127,17 @@ export default function Dashboard() {
                         <>
                             <button
                                 onClick={handleCancel}
-                                className="basis-1/4 flex items-center justify-center bg-[#EB5353] text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                className="basis-1/4 flex items-center justify-center bg-[#EB5353] hover:bg-red-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
                             >
-                                <X strokeWidth={3} />
+                                <X size={28} />
                                 <span className="ml-2">Cancel</span>
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="basis-1/4 flex items-center justify-center bg-[#4D96FF] text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                className="basis-1/4 flex items-center justify-center bg-[#4D96FF] hover:bg-blue-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
                             >
-                                <Save strokeWidth={3} />
-                                <span className="ml-2">Process</span>
+                                <ScanSearch size={28} />
+                                <span className="ml-2">Analysis</span>
                             </button>
                         </>
                     )}

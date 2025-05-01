@@ -46,7 +46,10 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild>
-                            <a href="/dashboard" className="h-full">
+                            <a
+                                href="/dashboard"
+                                className="h-full hover:bg-transparent hover:text-stone-200 active:bg-transparent active:text-stone-200 "
+                            >
                                 <Image
                                     src="/stone_logo.svg"
                                     alt="Vercel Logo"
