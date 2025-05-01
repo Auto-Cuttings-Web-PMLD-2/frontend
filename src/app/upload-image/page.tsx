@@ -132,10 +132,10 @@ export default function Dashboard() {
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="basis-1/4 flex items-center justify-center bg-[#6BCB77] text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                className="basis-1/4 flex items-center justify-center bg-[#4D96FF] text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
                             >
                                 <Save strokeWidth={3} />
-                                <span className="ml-2">Save</span>
+                                <span className="ml-2">Process</span>
                             </button>
                         </>
                     )}

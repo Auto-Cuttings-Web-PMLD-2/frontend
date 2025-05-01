@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Dashboard() {
     return (
-        <div className="bg-[#F4F4F4]  p-10">
+        <div className="bg-[#F4F4F4] p-10">
             <div className="flex items-center text-5xl font-semibold text-black opacity-60">
                 <LayoutDashboard className="h-16 w-16" />
                 <span className="ml-4">Dashboard</span>
