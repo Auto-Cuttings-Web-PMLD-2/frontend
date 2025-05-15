@@ -12,16 +12,16 @@ export default function Signup() {
                 height={1200}
             />
             <div className="px-20 w-full">
-                <p className="font-bold text-5xl text-stone-600">
+                <p className="font-bold text-5xl text-[var(--biru-tiga)]">
                     Don’t have account ?
                 </p>
-                <p className="font-medium text-4xl text-stone-600 mt-3">
+                <p className="font-medium text-4xl text-[var(--biru-dua)]">
                     Let’s create your account
                 </p>
                 <SignupForm />
                 <p className="font-normal text-xl text-stone-600 mt-8 text-center">
                     Do you have an account?
-                    <span className="text-[#4D96FF]"> Log In</span>
+                    <span className="text-[var(--biru-dua)]"> Log In</span>
                 </p>
             </div>
         </div>

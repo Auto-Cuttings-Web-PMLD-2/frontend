@@ -111,11 +111,11 @@ export default function SigninForm() {
 
                 <p className="font-medium text-base text-stone-600 mt-2">
                     Forgot password?
-                    <span className="text-[#4D96FF]"> Click here</span>
+                    <span className="text-[var(--biru-dua)]"> Click here</span>
                 </p>
                 <Button
                     type="submit"
-                    className="w-full mt-11 py-7 text-2xl font-medium bg-[#4D96FF] text-white"
+                    className="w-full mt-11 py-7 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                 >
                     Sign In
                 </Button>

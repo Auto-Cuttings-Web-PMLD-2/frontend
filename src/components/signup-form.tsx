@@ -183,7 +183,7 @@ export default function SignupForm() {
                 />
                 <Button
                     type="submit"
-                    className="w-full mt-11 py-6 text-2xl font-medium bg-[#4D96FF] text-white"
+                    className="w-full mt-11 py-6 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                 >
                     Sign Up
                 </Button>

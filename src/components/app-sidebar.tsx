@@ -41,8 +41,8 @@ export function AppSidebar() {
     const pathName = usePathname();
 
     return (
-        <Sidebar className="bg-black text-stone-200">
-            <SidebarHeader className="h-20 flex items-center flex-row bg-black">
+        <Sidebar className="bg-[var(--biru-dua)] text-stone-200">
+            <SidebarHeader className="h-20 flex items-center flex-row bg-[var(--biru-dua)]">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild>
@@ -64,30 +64,38 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <div className="bg-black">
-                <hr className="h-1 bg-stone-100 mx-4"></hr>
+            <div className="bg-[var(--biru-dua)]">
+                <hr className="h-[2px] bg-stone-100 mx-4"></hr>
             </div>
-            <SidebarContent className="p-4 bg-black">
+            <SidebarContent className="p-4 bg-[var(--biru-dua)]">
                 <SidebarMenu>
-                    {items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton
-                                asChild
-                                isActive={pathName === item.url}
-                            >
-                                <Link
-                                    href={item.url}
-                                    className={cn(
-                                        "p-4 flex items-center justify-start", // default
-                                        "group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center" // saat collapsed
-                                    )}
-                                >
-                                    <item.icon />
-                                    <span>{item.title}</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
+                    {items.map((item) => {
+                        const isActive = pathName === item.url;
+                        const textColor = isActive
+                            ? "text-[var(--biru-dua)]"
+                            : "text-white";
+                        const bgColor = isActive ? "bg-[var(--biru-satu)]" : "";
+
+                        return (
+                            <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton asChild isActive={isActive}>
+                                    <Link
+                                        href={item.url}
+                                        className={cn(
+                                            "p-4 flex items-center justify-start",
+                                            bgColor,
+                                            "group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
+                                        )}
+                                    >
+                                        <item.icon className={textColor} />
+                                        <span className={textColor}>
+                                            {item.title}
+                                        </span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        );
+                    })}
                 </SidebarMenu>
             </SidebarContent>
         </Sidebar>

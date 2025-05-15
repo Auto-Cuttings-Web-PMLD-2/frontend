@@ -7,8 +7,10 @@ export default function Signin() {
     return (
         <div className="flex items-center h-screen">
             <div className="px-20 w-full">
-                <p className="font-bold text-5xl text-stone-600">Welcome !</p>
-                <p className="font-medium text-4xl text-stone-600 mt-5">
+                <p className="font-bold text-5xl text-[var(--biru-tiga)]">
+                    Welcome !
+                </p>
+                <p className="font-medium text-4xl text-[var(--biru-dua)]">
                     Log In to accsess your account
                 </p>
                 <SigninForm />

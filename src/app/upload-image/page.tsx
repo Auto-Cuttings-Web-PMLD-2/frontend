@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Upload, Plus, X, ScanSearch } from "lucide-react";
 import Image from "next/image";
 
-export default function Dashboard() {
+export default function UploadImage() {
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);

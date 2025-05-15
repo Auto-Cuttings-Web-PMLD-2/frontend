@@ -133,14 +133,14 @@ export default function ConfirmPasswordForm() {
                 <div className="flex justify-end gap-5">
                     <Button
                         type="submit"
-                        className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[#EB5353] text-white"
+                        className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--merah-satu)] text-white"
                     >
                         Cancel
                     </Button>
                     <Button
                         type="button"
                         onClick={() => console.log("click")}
-                        className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[#4D96FF] text-white"
+                        className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                     >
                         Next
                     </Button>
