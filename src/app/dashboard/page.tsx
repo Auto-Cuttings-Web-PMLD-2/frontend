@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Dashboard() {
     return (
         <div className="bg-[#F4F4F4] p-10">
-            <div className="flex items-center text-5xl font-semibold text-black opacity-60">
+            <div className="flex items-center text-5xl font-semibold text-[var(--biru-dua)]">
                 <LayoutDashboard className="h-16 w-16" />
                 <span className="ml-4">Dashboard</span>
             </div>
@@ -36,8 +36,8 @@ export default function Dashboard() {
                 </div>
                 <div className="flex justify-around items-center mt-20">
                     <div>
-                        <div className="w-4 h-4 rounded-full bg-[#A0C878] inline-block"></div>
-                        <p className="inline-block text-2xl font-semibold text-[#555555]">
+                        <div className="w-4 h-4 rounded-full bg-[var(--biru-satu)] inline-block"></div>
+                        <p className="ml-5 inline-block text-2xl font-semibold text-[#555555]">
                             Total of All Incoming Data
                         </p>
                         <p className="text-center text-2xl text-[#555555] mt-5">
@@ -45,8 +45,8 @@ export default function Dashboard() {
                         </p>
                     </div>
                     <div>
-                        <div className="w-4 h-4 rounded-full bg-[#A0C878] inline-block"></div>
-                        <p className="inline-block text-2xl font-semibold text-[#555555]">
+                        <div className="w-4 h-4 rounded-full bg-[var(--biru-tiga)] inline-block"></div>
+                        <p className="ml-5 inline-block text-2xl font-semibold text-[#555555]">
                             Total Incoming Data Today
                         </p>
                         <p className="text-center text-2xl text-[#555555] mt-5">

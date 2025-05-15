@@ -67,28 +67,47 @@ export function AppSidebar() {
             <div className="bg-[var(--biru-dua)]">
                 <hr className="h-[2px] bg-stone-100 mx-4"></hr>
             </div>
-            <SidebarContent className="p-4 bg-[var(--biru-dua)]">
+            <SidebarContent className="pt-4 bg-[var(--biru-dua)]">
                 <SidebarMenu>
                     {items.map((item) => {
                         const isActive = pathName === item.url;
-                        const textColor = isActive
-                            ? "text-[var(--biru-dua)]"
-                            : "text-white";
-                        const bgColor = isActive ? "bg-[var(--biru-satu)]" : "";
 
                         return (
-                            <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild isActive={isActive}>
+                            <SidebarMenuItem
+                                key={item.title}
+                                className="rounded-none"
+                            >
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={isActive}
+                                    className="rounded-none"
+                                >
                                     <Link
                                         href={item.url}
                                         className={cn(
-                                            "p-4 flex items-center justify-start",
-                                            bgColor,
+                                            "py-4 px-8 flex items-center justify-start rounded-md",
+                                            isActive &&
+                                                "!bg-[var(--biru-satu)]",
+                                            isActive &&
+                                                "!text-[var(--biru-dua)]",
                                             "group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
                                         )}
                                     >
-                                        <item.icon className={textColor} />
-                                        <span className={textColor}>
+                                        <item.icon
+                                            className={cn(
+                                                "mr-2",
+                                                isActive
+                                                    ? "!text-[var(--biru-dua)]"
+                                                    : "text-white"
+                                            )}
+                                        />
+                                        <span
+                                            className={
+                                                isActive
+                                                    ? "!text-[var(--biru-dua)]"
+                                                    : "text-white"
+                                            }
+                                        >
                                             {item.title}
                                         </span>
                                     </Link>
