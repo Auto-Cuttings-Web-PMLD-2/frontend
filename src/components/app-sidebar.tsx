@@ -75,38 +75,37 @@ export function AppSidebar() {
                         return (
                             <SidebarMenuItem
                                 key={item.title}
-                                className="rounded-none"
+                                className="group/item"
                             >
                                 <SidebarMenuButton
                                     asChild
                                     isActive={isActive}
-                                    className="rounded-none"
+                                    className={cn(
+                                        "rounded-none transition-colors",
+                                        isActive &&
+                                            "!bg-[var(--biru-satu)] !text-[var(--biru-dua)]",
+                                        "group-hover/item:bg-[var(--biru-satu)] group-hover/item:text-[var(--biru-dua)]"
+                                    )}
                                 >
                                     <Link
                                         href={item.url}
-                                        className={cn(
-                                            "py-4 px-8 flex items-center justify-start rounded-md",
-                                            isActive &&
-                                                "!bg-[var(--biru-satu)]",
-                                            isActive &&
-                                                "!text-[var(--biru-dua)]",
-                                            "group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center"
-                                        )}
+                                        className="py-4 px-8 flex items-center justify-start"
                                     >
                                         <item.icon
                                             className={cn(
-                                                "mr-2",
+                                                "mr-2 transition-colors",
                                                 isActive
-                                                    ? "!text-[var(--biru-dua)]"
-                                                    : "text-white"
+                                                    ? "text-[var(--biru-dua)]"
+                                                    : "text-white group-hover/item:text-[var(--biru-dua)]"
                                             )}
                                         />
                                         <span
-                                            className={
+                                            className={cn(
+                                                "transition-colors",
                                                 isActive
-                                                    ? "!text-[var(--biru-dua)]"
-                                                    : "text-white"
-                                            }
+                                                    ? "text-[var(--biru-dua)]"
+                                                    : "text-white group-hover/item:text-[var(--biru-dua)]"
+                                            )}
                                         >
                                             {item.title}
                                         </span>

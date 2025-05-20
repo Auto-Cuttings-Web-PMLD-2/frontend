@@ -1,5 +1,10 @@
 "use client";
 import HistoryIcon from "@mui/icons-material/History";
+import { Box, Button, IconButton } from "@mui/material";
+import {
+    Visibility as VisibilityIcon,
+    Delete as DeleteIcon,
+} from "@mui/icons-material";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -11,7 +16,6 @@ import {
     type MRT_RowSelectionState,
     type MRT_Row,
 } from "material-react-table";
-import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv"; //or use your library of choice here
 import { makeData, type Person } from "@/app/history/makeData";
@@ -179,11 +183,34 @@ export default function HistoryResult() {
                 </Button>
             </Box>
         ),
+        enableRowActions: true,
+        renderRowActions: ({ row }) => (
+            <Box>
+                <IconButton
+                    color="primary"
+                    onClick={() => console.info("View")}
+                >
+                    <VisibilityIcon />
+                </IconButton>
+                <IconButton
+                    color="error"
+                    onClick={() => console.info("Delete")}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            </Box>
+        ),
+        positionActionsColumn: "last",
+        displayColumnDefOptions: {
+            "mrt-row-actions": {
+                grow: true,
+            },
+        },
     });
 
     return (
         <div className="bg-[#F4F4F4] p-10">
-            <div className="flex items-center text-5xl font-semibold text-black opacity-60">
+            <div className="flex items-center text-5xl font-bold text-[var(--biru-dua)]">
                 <HistoryIcon sx={{ fontSize: 64 }} />
                 <span className="ml-4">History Project</span>
             </div>

@@ -484,7 +484,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
         <li
             data-slot="sidebar-menu-item"
             data-sidebar="menu-item"
-            className={cn("group/menu-item relative", className)}
+            className={cn("group relative", className)} // ubah ini
             {...props}
         />
     );
@@ -537,6 +537,8 @@ function SidebarMenuButton({
             data-active={isActive}
             className={cn(
                 sidebarMenuButtonVariants({ variant, size }),
+                // Tambahan hover khusus item
+                "!rounded-none", // opsional tergantung kebutuhan
                 className
             )}
             {...props}

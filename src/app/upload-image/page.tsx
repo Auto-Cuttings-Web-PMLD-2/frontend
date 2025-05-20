@@ -59,7 +59,7 @@ export default function UploadImage() {
 
     return (
         <div className="bg-[#F4F4F4] p-10">
-            <div className="flex items-center text-5xl font-semibold text-black opacity-60">
+            <div className="flex items-center text-5xl font-bold text-[var(--biru-dua)]">
                 <Upload className="h-16 w-16" />
                 <span className="ml-4">Upload Image</span>
             </div>
@@ -134,7 +134,7 @@ export default function UploadImage() {
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="basis-1/4 flex items-center justify-center bg-[#4D96FF] hover:bg-blue-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                className="basis-1/4 flex items-center justify-center bg-[var(--biru-dua)] hover:bg-blue-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
                             >
                                 <ScanSearch size={28} />
                                 <span className="ml-2">Analysis</span>
