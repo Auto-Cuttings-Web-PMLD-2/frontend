@@ -43,7 +43,14 @@ export default function HistoryResult() {
   //should be memoized or stable
   const columns = useMemo<MRT_ColumnDef<Project>[]>(
     () => [
-      { accessorKey: "id", header: "ID", size: 80 },
+      {
+        id: "rowNumber",
+        header: "No",
+        size: 50,
+        Cell: ({ row }) => row.index + 1,
+        enableSorting: false,
+        enableColumnFilter: false,
+      },
       { accessorKey: "postDate", header: "Date", size: 200 },
       { accessorKey: "name", header: "Project Name", size: 200 },
     ],
@@ -146,7 +153,6 @@ export default function HistoryResult() {
     enableColumnVirtualization: true,
     enableGlobalFilterModes: true,
     enablePagination: true,
-    enableRowNumbers: true,
     enableRowSelection: true,
     enableBatchRowSelection: true,
     enableRowVirtualization: true,
@@ -203,11 +209,6 @@ export default function HistoryResult() {
     renderRowActions,
     enableRowActions: true,
     positionActionsColumn: "last",
-    displayColumnDefOptions: {
-      "mrt-row-actions": {
-        grow: true,
-      },
-    },
   });
 
   return (
