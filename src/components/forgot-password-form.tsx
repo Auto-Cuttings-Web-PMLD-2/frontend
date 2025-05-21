@@ -60,13 +60,14 @@ export default function ForgotPasswordForm() {
                 />
                 <div className="flex justify-end gap-5">
                     <Button
-                        type="submit"
+                        type="button"
                         className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--merah-satu)] text-white"
+                        onClick={() => history.back()}
                     >
                         Cancel
                     </Button>
                     <Button
-                        type="button"
+                        type="submit"
                         onClick={() => console.log("click")}
                         className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                     >

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import SignupForm from "@/components/signup-form";
 
 export default function Signup() {
@@ -21,7 +22,9 @@ export default function Signup() {
                 <SignupForm />
                 <p className="font-normal text-xl text-stone-600 mt-8 text-center">
                     Do you have an account?
-                    <span className="text-[var(--biru-dua)]"> Log In</span>
+                    <span className="text-[var(--biru-dua)]">
+                        <Link href={"/signin"}> Log In</Link>
+                    </span>
                 </p>
             </div>
         </div>

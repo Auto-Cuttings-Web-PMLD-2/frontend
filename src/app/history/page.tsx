@@ -18,7 +18,7 @@ import {
 } from "material-react-table";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv"; //or use your library of choice here
-import { makeData, type Person } from "@/app/history/makeData";
+import { makeData, type Project } from "@/app/history/makeData";
 
 const csvConfig = mkConfig({
     fieldSeparator: ",",
@@ -27,42 +27,31 @@ const csvConfig = mkConfig({
     filename: "ExportedData",
 });
 
-const flattenPerson = (person: Person) => ({
-    firstName: person.name.firstName,
-    lastName: person.name.lastName,
-    address: person.address,
-    city: person.city,
-    state: person.state,
+const flattenProject = (project: Project) => ({
+    id: project.id,
+    name: project.name,
+    postDate: project.postDate,
 });
 
 export default function HistoryResult() {
     //should be memoized or stable
-    const columns = useMemo<MRT_ColumnDef<Person>[]>(
+    const columns = useMemo<MRT_ColumnDef<Project>[]>(
         () => [
             {
-                accessorKey: "name.firstName", //access nested data with dot notation
-                header: "First Name",
+                accessorKey: "id",
+                header: "ID",
                 size: 150,
             },
             {
-                accessorKey: "name.lastName",
-                header: "Last Name",
+                accessorKey: "postDate",
+                header: "Date",
                 size: 150,
+                Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(), // Format ke "MM/DD/YYYY" atau sesuai lokal
             },
             {
-                accessorKey: "address", //normal accessorKey
-                header: "Address",
+                accessorKey: "name",
+                header: "Project Name",
                 size: 200,
-            },
-            {
-                accessorKey: "city",
-                header: "City",
-                size: 150,
-            },
-            {
-                accessorKey: "state",
-                header: "State",
-                size: 150,
             },
         ],
         []
@@ -71,7 +60,7 @@ export default function HistoryResult() {
     //optionally access the underlying virtualizer instance
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
 
-    const [data, setData] = useState<Person[]>([]);
+    const [data, setData] = useState<Project[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<MRT_SortingState>([]);
     //using state if you want to manage the pagination state yourself
@@ -97,14 +86,14 @@ export default function HistoryResult() {
         }
     }, [sorting]);
 
-    const handleExportRows = (rows: MRT_Row<Person>[]) => {
-        const rowData = rows.map((row) => flattenPerson(row.original));
+    const handleExportRows = (rows: MRT_Row<Project>[]) => {
+        const rowData = rows.map((row) => flattenProject(row.original));
         const csv = generateCsv(csvConfig)(rowData);
         download(csvConfig)(csv);
     };
 
     const handleExportData = () => {
-        const flatData = data.map(flattenPerson);
+        const flatData = data.map(flattenProject);
         const csv = generateCsv(csvConfig)(flatData);
         download(csvConfig)(csv);
     };

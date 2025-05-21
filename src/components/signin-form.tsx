@@ -17,16 +17,11 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signInUser } from "@/lib/auth";
+import Link from "next/link";
 
 const formSchema = z.object({
-    username: z
-        .string()
-        .min(2, {
-            message: "Username must be at least 2 characters.",
-        })
-        .max(30, {
-            message: "Username must be less than 30 characters.",
-        }),
+    email: z.string().email("Invalid email.").toLowerCase(),
     password: z.string().min(5, {
         message: "Password must be at least 5 characters.",
     }),
@@ -37,16 +32,24 @@ export default function SigninForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            email: "",
             password: "",
         },
     });
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+    // 2. Define a signin submit handler.
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const result = await signInUser(values);
+            console.log("Login berhasil", result);
+
+            // Redirect ke dashboard
+            if (typeof window !== "undefined") {
+                window.location.href = "/dashboard";
+            }
+        } catch (error: any) {
+            alert("Login gagal: " + error.message);
+        }
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -56,11 +59,11 @@ export default function SigninForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-15">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="email"
                     render={({ field }) => (
                         <FormItem className="mt-5">
                             <FormLabel className="font-medium text-2xl text-stone-600">
-                                Username
+                                Email
                             </FormLabel>
                             <FormControl>
                                 <Input
@@ -111,7 +114,9 @@ export default function SigninForm() {
 
                 <p className="font-medium text-base text-stone-600 mt-2">
                     Forgot password?
-                    <span className="text-[var(--biru-dua)]"> Click here</span>
+                    <span className="text-[var(--biru-dua)]">
+                        <Link href="/forgot-password"> Click here</Link>
+                    </span>
                 </p>
                 <Button
                     type="submit"

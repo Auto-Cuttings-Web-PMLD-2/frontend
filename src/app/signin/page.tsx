@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SigninForm from "@/components/signin-form";
+import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -26,7 +27,9 @@ export default function Signin() {
                     </div>
                     <p className="text-center">
                         Don’t have account?
-                        <span className="text-[#4D96FF]"> Sign Up</span>
+                        <span className="text-[#4D96FF]">
+                            <Link href={"/signup"}> Sign Up</Link>
+                        </span>
                     </p>
                 </div>
             </div>
