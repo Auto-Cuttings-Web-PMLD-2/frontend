@@ -1,6 +1,6 @@
-import ConfirmPasswordForm from "@/components/confirm-password-form";
+import ResetPasswordForm from "@/components/reset-password-form";
 
-export default function ConfirmPassword() {
+export default function ResetPassword() {
     return (
         <div className="bg-white h-screen flex items-center justify-center">
             <div className="">
@@ -10,7 +10,7 @@ export default function ConfirmPassword() {
                 <p className="text-[40px] text-[var(--biru-dua)] font-medium text-center mt-3">
                     Input your new password
                 </p>
-                <ConfirmPasswordForm />
+                <ResetPasswordForm />
             </div>
         </div>
     );

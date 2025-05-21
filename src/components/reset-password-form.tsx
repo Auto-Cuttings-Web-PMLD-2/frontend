@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
-
+import { useParams, useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,17 +23,16 @@ const formSchema = z
         password: z.string().min(5, {
             message: "Password must be at least 5 characters.",
         }),
-        confirm_password: z.string().min(2, {
-            message: "Password must be at least 6 characters.",
+        confirm_password: z.string().min(5, {
+            message: "Confirm password must be at least 5 characters.",
         }),
     })
     .refine((data) => data.password === data.confirm_password, {
         message: "Passwords do not match",
-        path: ["confirm_password"], // menaruh error di field confirm_password
+        path: ["confirm_password"],
     });
 
-export default function ConfirmPasswordForm() {
-    // 1. Define your form.
+export default function ResetPasswordForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,19 +41,43 @@ export default function ConfirmPasswordForm() {
         },
     });
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
-    }
+    const params = useParams(); // dapatkan token dari URL
+    const router = useRouter();
+    const token = params.token as string;
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const response = await fetch(
+                `http://localhost:5000/reset-password/${token}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ new_password: values.password }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Gagal reset password.");
+            } else {
+                alert("Password berhasil diubah!");
+                router.push("/signin");
+            }
+        } catch (error) {
+            alert("Terjadi kesalahan server. Message: " + error);
+        }
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-15">
+                {/* Password field */}
                 <FormField
                     control={form.control}
                     name="password"
@@ -79,7 +102,7 @@ export default function ConfirmPasswordForm() {
                                             setShowPassword(!showPassword)
                                         }
                                         className="absolute right-3 top-1/2 -translate-y-1/2"
-                                        tabIndex={-1} // biar ga tab focus ke tombol
+                                        tabIndex={-1}
                                     >
                                         {showPassword ? <Eye /> : <EyeOff />}
                                     </button>
@@ -89,6 +112,8 @@ export default function ConfirmPasswordForm() {
                         </FormItem>
                     )}
                 />
+
+                {/* Confirm Password field */}
                 <FormField
                     control={form.control}
                     name="confirm_password"
@@ -130,16 +155,18 @@ export default function ConfirmPasswordForm() {
                         </FormItem>
                     )}
                 />
+
+                {/* Submit button */}
                 <div className="flex justify-end gap-5">
                     <Button
-                        type="submit"
+                        type="button"
                         className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--merah-satu)] text-white"
+                        onClick={() => router.back()}
                     >
                         Cancel
                     </Button>
                     <Button
-                        type="button"
-                        onClick={() => console.log("click")}
+                        type="submit"
                         className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                     >
                         Next

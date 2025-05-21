@@ -1,8 +1,10 @@
+// ForgotPasswordForm.tsx
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +18,13 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-    email: z.string().email("Invalid email.").toLowerCase(),
+    email: z.string().email("Email tidak valid.").toLowerCase(),
 });
 
 export default function ForgotPasswordForm() {
-    // 1. Define your form.
+    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,11 +32,29 @@ export default function ForgotPasswordForm() {
         },
     });
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const res = await fetch("http://127.0.0.1:5000/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: values.email }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                setMessage(result.message);
+                setError(null);
+            } else {
+                setError(result.message || "Terjadi kesalahan");
+                setMessage(null);
+            }
+        } catch (err) {
+            setError("Gagal terhubung ke server. Message: " + err);
+            setMessage(null);
+        }
     }
 
     return (
@@ -58,6 +80,12 @@ export default function ForgotPasswordForm() {
                         </FormItem>
                     )}
                 />
+
+                {message && (
+                    <p className="mt-4 text-green-600 text-xl">{message}</p>
+                )}
+                {error && <p className="mt-4 text-red-600 text-xl">{error}</p>}
+
                 <div className="flex justify-end gap-5">
                     <Button
                         type="button"
@@ -68,7 +96,6 @@ export default function ForgotPasswordForm() {
                     </Button>
                     <Button
                         type="submit"
-                        onClick={() => console.log("click")}
                         className="basis-1/3 mt-11 py-7 text-2xl font-medium bg-[var(--biru-dua)] text-white"
                     >
                         Next

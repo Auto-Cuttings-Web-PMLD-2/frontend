@@ -8,6 +8,7 @@ import Image from "next/image";
 export default function UploadImage() {
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const { push } = useRouter();
 
@@ -41,20 +42,35 @@ export default function UploadImage() {
         setPreview(null);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!image) return;
 
-        // Simulasi upload (nanti bisa diganti dengan API call)
+        setIsLoading(true);
         const formData = new FormData();
-        formData.append("file", image);
+        formData.append("image", image);
 
-        // Contoh:
-        console.log("Uploading image:", image.name);
-        // fetch('/api/upload', { method: 'POST', body: formData })
+        try {
+            const response = await fetch("http://127.0.0.1:5000/analyze", {
+                method: "POST",
+                body: formData,
+            });
 
-        // Setelah upload, bisa redirect atau reset
-        alert("Gambar berhasil disubmit!");
-        push("/result-image");
+            if (!response.ok) {
+                throw new Error("Gagal mengupload gambar");
+            }
+
+            const result = await response.json();
+
+            // Simpan ke localStorage untuk digunakan di halaman result-image
+            localStorage.setItem("resultData", JSON.stringify(result));
+
+            push("/result-image");
+        } catch (error) {
+            alert("Terjadi kesalahan saat mengupload gambar.");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -128,6 +144,7 @@ export default function UploadImage() {
                             <button
                                 onClick={handleCancel}
                                 className="basis-1/4 flex items-center justify-center bg-[#EB5353] hover:bg-red-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                disabled={isLoading}
                             >
                                 <X size={28} />
                                 <span className="ml-2">Cancel</span>
@@ -135,9 +152,12 @@ export default function UploadImage() {
                             <button
                                 onClick={handleSave}
                                 className="basis-1/4 flex items-center justify-center bg-[var(--biru-dua)] hover:bg-blue-800 cursor-pointer text-white text-2xl font-medium pl-6 pr-12 py-3 rounded-lg"
+                                disabled={isLoading}
                             >
                                 <ScanSearch size={28} />
-                                <span className="ml-2">Analysis</span>
+                                <span className="ml-2">
+                                    {isLoading ? "Uploading..." : "Analysis"}
+                                </span>
                             </button>
                         </>
                     )}
