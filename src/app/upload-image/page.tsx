@@ -50,8 +50,9 @@ export default function UploadImage() {
         formData.append("image", image);
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/analyze", {
+            const response = await fetch("http://localhost:5000/analyze", {
                 method: "POST",
+                credentials: "include", // ← penting agar cookie dikirim,
                 body: formData,
             });
 
@@ -156,7 +157,7 @@ export default function UploadImage() {
                             >
                                 <ScanSearch size={28} />
                                 <span className="ml-2">
-                                    {isLoading ? "Uploading..." : "Analysis"}
+                                    {isLoading ? "Process..." : "Analysis"}
                                 </span>
                             </button>
                         </>

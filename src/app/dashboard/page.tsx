@@ -91,7 +91,7 @@ export default function Dashboard() {
                 <span className="ml-4">Dashboard</span>
             </div>
             <div className="bg-white mt-10 px-20 rounded-xl shadow-xl">
-                <PieChartDonut />
+                <PieChartDonut sandTotal={sandTotal} siltTotal={siltTotal} />
                 <div className="border-3 border-dashed border-[#4D96FF] rounded-2xl p-10">
                     <p className="text-2xl font-semibold text-[#555555]">
                         Percentage comparison of stone types
