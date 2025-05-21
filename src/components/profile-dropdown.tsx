@@ -32,7 +32,6 @@ export function ProfileDropdown() {
                 if (res.ok) {
                     const data = await res.json();
                     setUsername(data.username);
-                    console.log("User info:", data.username);
                 } else {
                     console.error(
                         "Gagal mengambil user info:",
