@@ -30,7 +30,7 @@ const csvConfig = mkConfig({
 const flattenProject = (project: Project) => ({
     id: project.id,
     name: project.name,
-    postDate: project.postDate,
+    postDate: project.postDate.toLocaleDateString(),
 });
 
 export default function HistoryResult() {
