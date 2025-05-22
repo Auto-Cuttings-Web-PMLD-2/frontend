@@ -104,21 +104,28 @@ export default function ProjectDetailPage({
         <table className="table-auto border-collapse border border-gray-400 shadow-lg mt-3 w-full text-[#1D2433]">
           <thead className="text-sm font-bold bg-[#F1F3F9]">
             <tr>
-              <th className="border border-gray-300 py-2">Class name</th>
+              <th className="border border-gray-300 py-2">Class Name</th>
               <th className="border border-gray-300 py-2">Coverage</th>
+              <th className="border border-gray-300 py-2">Count</th>
             </tr>
           </thead>
           <tbody className="text-sm font-normal">
             <tr>
               <td className="border border-gray-300 py-2 pl-2">Siltstone</td>
               <td className="border border-gray-300 py-2 pl-2">
-                {project.siltStoneCoverage.toFixed(2)}
+                {project.siltStoneCoverage}
+              </td>
+              <td className="border border-gray-300 py-2 pl-2">
+                {project.siltStoneCount}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 py-2 pl-2">Sandstone</td>
               <td className="border border-gray-300 py-2 pl-2">
-                {project.sandStoneCoverage.toFixed(2)}
+                {project.sandStoneCoverage}
+              </td>
+              <td className="border border-gray-300 py-2 pl-2">
+                {project.sandStoneCount}
               </td>
             </tr>
           </tbody>
@@ -127,7 +134,7 @@ export default function ProjectDetailPage({
         <div className="w-full flex justify-end">
           <button
             onClick={handleBack}
-            className="flex justify-center items-center w-56 mt-8 mr-5 py-3 pr-7 rounded-md text-2xl text-white font-medium bg-[var(--biru-dua)] hover:bg-red-800 cursor-pointer"
+            className="flex justify-center items-center w-56 mt-8 mr-5 py-3 pr-7 rounded-md text-2xl text-white font-medium bg-[var(--biru-dua)] hover:bg-gray-500 cursor-pointer"
           >
             <ChevronLeft size={28} />
             <span className="ml-2">Back</span>
