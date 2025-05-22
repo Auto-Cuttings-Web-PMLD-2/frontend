@@ -30,6 +30,8 @@ export async function signInUser(data: { email: string; password: string }) {
 export async function signOutUser() {
     // Hapus cookie access_token
     Cookies.remove("access_token");
+    localStorage.clear();
+    sessionStorage.clear();
 
     // Redirect ke halaman signin
     window.location.href = "/signin";

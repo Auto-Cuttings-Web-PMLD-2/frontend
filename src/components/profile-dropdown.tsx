@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CircleUserRound, ChevronDown } from "lucide-react";
 import { signOutUser } from "@/lib/auth";
+import TokenValidator from "@/components/token-validator"; // Memeriksa token apakah sudah expired
 
 export function ProfileDropdown() {
     const [username, setUsername] = useState<string>("...");
@@ -63,6 +64,7 @@ export function ProfileDropdown() {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
+            <TokenValidator />
         </div>
     );
 }
