@@ -5,11 +5,12 @@ import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Cookies from "js-cookie";
+import { use } from "react";
 
 interface Project {
   id: number;
   name: string;
-  postDate: string | Date; // bisa string atau Date
+  postDate: string | Date;
   sandStoneCount: number;
   sandStoneCoverage: number;
   segmentedImageURL: string;
@@ -17,18 +18,18 @@ interface Project {
   siltStoneCoverage: number;
 }
 
-interface ProjectDetailPageProps {
-  params: { id: string };
-}
-
-export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const { id } = params;
+export default function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const resolvedParams = use(params);
+  const { id } = resolvedParams;
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fungsi untuk memformat tanggal menjadi YYYY-MM-DD
   const formatDate = (date: Date | string): string => {
     return new Date(date).toISOString().split("T")[0];
   };
@@ -38,7 +39,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
       setIsLoading(true);
       try {
         const token = Cookies.get("access_token");
-        const response = await fetch("http://127.0.0.1:5000/projects", {
+        const response = await fetch(`http://localhost:5000/projects/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,16 +50,8 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
           throw new Error("Gagal mengambil data project");
         }
 
-        const data: Project[] = await response.json();
-
-        // Cari project sesuai ID dari params
-        const foundProject = data.find((p) => p.id === parseInt(id));
-
-        if (!foundProject) {
-          throw new Error("Project tidak ditemukan");
-        }
-
-        setProject(foundProject);
+        const data = await response.json();
+        setProject(data);
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Terjadi kesalahan saat memuat data");
@@ -95,13 +88,10 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
         <p className="text-5xl font-semibold text-[var(--biru-dua)] text-center">
           {project.name}
         </p>
-
-        {/* Tanggal diproses dengan fungsi formatDate */}
         <p className="mt-4 text-sm text-gray-600 text-center">
-          Tanggal Posting: {formatDate(project.postDate)}
+          Post date : {formatDate(project.postDate)}
         </p>
 
-        {/* Gambar hasil segmentasi */}
         <Image
           src={project.segmentedImageURL}
           alt="Segmentation Result"
@@ -110,14 +100,12 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
           className="mt-10 w-full h-fit object-contain"
         />
 
-        {/* Tabel Hasil */}
         <p className="mt-8 text-2xl font-medium">Tabel Hasil</p>
         <table className="table-auto border-collapse border border-gray-400 shadow-lg mt-3 w-full text-[#1D2433]">
           <thead className="text-sm font-bold bg-[#F1F3F9]">
             <tr>
-              <th className="border border-gray-300 py-2">Nama Kelas</th>
-              <th className="border border-gray-300 py-2">Luas (m²)</th>
-              <th className="border border-gray-300 py-2">Jumlah</th>
+              <th className="border border-gray-300 py-2">Class name</th>
+              <th className="border border-gray-300 py-2">Coverage</th>
             </tr>
           </thead>
           <tbody className="text-sm font-normal">
@@ -126,17 +114,11 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
               <td className="border border-gray-300 py-2 pl-2">
                 {project.siltStoneCoverage.toFixed(2)}
               </td>
-              <td className="border border-gray-300 py-2 pl-2">
-                {project.siltStoneCount}
-              </td>
             </tr>
             <tr>
               <td className="border border-gray-300 py-2 pl-2">Sandstone</td>
               <td className="border border-gray-300 py-2 pl-2">
                 {project.sandStoneCoverage.toFixed(2)}
-              </td>
-              <td className="border border-gray-300 py-2 pl-2">
-                {project.sandStoneCount}
               </td>
             </tr>
           </tbody>

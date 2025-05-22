@@ -52,7 +52,18 @@ export default function HistoryResult() {
         enableColumnFilter: false,
       },
       { accessorKey: "postDate", header: "Date", size: 200 },
-      { accessorKey: "name", header: "Project Name", size: 200 },
+      {
+        accessorKey: "name",
+        header: "Project Name",
+        size: 300,
+        muiTableBodyCellProps: {
+          sx: {
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            maxWidth: 300,
+          },
+        },
+      },
     ],
     []
   );
@@ -66,10 +77,32 @@ export default function HistoryResult() {
   //using state if you want to manage the pagination state yourself
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 15, //customize the default page size
+    pageSize: 5, //customize the default page size
   });
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({}); //ts type available
+  const formatDateWithMonthName = (dateString: string): string => {
+    const date = new Date(dateString);
+    const bulan = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
 
+    const tahun = date.getFullYear();
+    const bulanIndex = date.getMonth(); // 0 - 11
+    const hari = date.getDate();
+
+    return `${hari} ${bulan[bulanIndex]} ${tahun}`;
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,12 +114,18 @@ export default function HistoryResult() {
             Authorization: `Bearer ${token}`,
           },
         });
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const json = await response.json();
-        setData(json);
+        const formattedData = json.map((project: any) => ({
+          ...project,
+          postDate: formatDateWithMonthName(project.postDate),
+        }));
+
+        setData(formattedData);
       } catch (error) {
         console.error("ERROR:", error);
       } finally {
@@ -119,27 +158,73 @@ export default function HistoryResult() {
   };
 
   const router = useRouter();
-  const renderRowActions = ({ row }: { row: MRT_Row<Project> }) => (
-    <Box>
-      <IconButton
-        color="primary"
-        onClick={() => {
-          const projectId = row.original.id;
-          router.push(`/detail/${projectId}`);
+  const renderRowActions = ({ row }: { row: MRT_Row<Project> }) => {
+    const handleDelete = async () => {
+      const projectId = row.original.id;
+      const projectName = row.original.name;
+
+      const confirmDelete = confirm(
+        `Apakah Anda yakin ingin menghapus project "${projectName}"?`
+      );
+
+      if (!confirmDelete) return;
+
+      try {
+        const token = Cookies.get("access_token");
+        await fetch(`http://localhost:5000/projects/${projectId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        router.refresh();
+      } catch (error) {
+        console.error("Gagal menghapus project:", error);
+        alert("Terjadi kesalahan saat menghapus project");
+      }
+    };
+
+    return (
+      <Box
+        sx={{
+          display: "inline-flex",
+          gap: "0.5rem",
+          width: "max-content",
+          alignItems: "center",
         }}
       >
-        <VisibilityIcon />
-      </IconButton>
-      <IconButton color="error" onClick={() => console.info("Delete")}>
-        <DeleteIcon />
-      </IconButton>
-    </Box>
-  );
+        <IconButton
+          color="primary"
+          onClick={() => {
+            const projectId = row.original.id;
+            router.push(`/detail/${projectId}`);
+          }}
+        >
+          <VisibilityIcon />
+        </IconButton>
+        <IconButton color="error" onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+    );
+  };
 
   const table = useMaterialReactTable({
     columns,
-    data, //100 rows
-    onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
+    data,
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: "600px",
+        width: "100%",
+      },
+    },
+    muiTableProps: {
+      sx: {
+        width: "100%",
+        tableLayout: "fixed",
+      },
+    },
+    onPaginationChange: setPagination,
     muiPaginationProps: {
       color: "primary",
       shape: "rounded",
@@ -158,7 +243,6 @@ export default function HistoryResult() {
     enableRowVirtualization: true,
     onRowSelectionChange: setRowSelection,
     positionToolbarAlertBanner: "bottom",
-    muiTableContainerProps: { sx: { maxHeight: "600px" } },
     onSortingChange: setSorting,
     state: { isLoading, sorting, pagination, rowSelection },
     rowVirtualizerInstanceRef, //optional
